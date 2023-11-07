@@ -333,13 +333,6 @@ private:
               * (amplitude_source_1 * sin(2*PI*frequency*(count_time_explosion/1000) + phase_source_1 + delta_phase_1)) 
               * exp(-count_time_explosion/1000));
     
-    //return (amplitude_source_1 * sin(2*PI*frequency*count_time_explosition + phase_source_1 + delta_phase_1) );
-    //return sin(2*PI*frequency*count_time_explosition/1000 + delta_phase_1)* exp(-count_time_explosition/1000);
-    //return (cos(2*PI*frequency*count_time_explosion/1000 + delta_phase_1) * exp(-count_time_explosion/1000));
-    
-    //return sin(2*PI*100*count_time_explosion/1000 + PI/2);
-    
-    //return exp(-count_time_explosition/1000);
 
     //return double ((1/(dist_source2robot*dist_source2robot))
     //        * (amplitude_source_1 * sin(2*PI*frequency*count_time/1000 + phase_source_1 + delta_phase_1) + amplitude_source_3 * sin(2*PI*3*frequency*count_time + phase_source_3 + delta_phase_3)));
