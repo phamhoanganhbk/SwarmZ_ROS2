@@ -142,60 +142,49 @@ public:
 
     sub_pos_gps_r1 = this->create_subscription<px4_msgs::msg::SensorGps>("/px4_1/fmu/out/vehicle_gps_position", qos,
 		[this](const px4_msgs::msg::SensorGps::UniquePtr msg) {
-			std::cout << "\n";
+			//std::cout << "\n";
       pos_gps_r1_lat = msg->latitude_deg;
       pos_gps_r1_lon = msg->longitude_deg;
       pos_gps_r1_alt = msg->altitude_msl_m;
       
-      //dist_Ri_to_S = calculateDistance(pos_gps_r1_lat, pos_gps_r1_lon, pos_gps_r1_alt, POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
-      //std::cout << "distance_R1_to_Source (m): "      << dist_Ri_to_S << std::endl;
-
 
 		});
 
 
     sub_pos_gps_r2 = this->create_subscription<px4_msgs::msg::SensorGps>("/px4_2/fmu/out/vehicle_gps_position", qos,
 		[this](const px4_msgs::msg::SensorGps::UniquePtr msg) {
-			std::cout << "\n";
+			//std::cout << "\n";
       pos_gps_r2_lat = msg->latitude_deg;
       pos_gps_r2_lon = msg->longitude_deg;
       pos_gps_r2_alt = msg->altitude_msl_m;
       
-      //dist_Ri_to_S = calculateDistance(pos_gps_r2_lat, pos_gps_r2_lon, pos_gps_r2_alt, POS_SOURCE_EXPLOSITION_LAT, POS_SOURCE_EXPLOSITION_LONG, POS_SOURCE_EXPLOSITION_ALT);
-      //std::cout << "distance_R2_to_Source (m): "      << dist_Ri_to_S << std::endl;
 		});
 
     sub_pos_gps_r3 = this->create_subscription<px4_msgs::msg::SensorGps>("/px4_3/fmu/out/vehicle_gps_position", qos,
 		[this](const px4_msgs::msg::SensorGps::UniquePtr msg) {
-			std::cout << "\n";
+			//std::cout << "\n";
       pos_gps_r3_lat = msg->latitude_deg;
       pos_gps_r3_lon = msg->longitude_deg;
       pos_gps_r3_alt = msg->altitude_msl_m;
       
-      //dist_Ri_to_S = calculateDistance(pos_gps_r3_lat, pos_gps_r3_lon, pos_gps_r3_alt, POS_SOURCE_EXPLOSITION_LAT, POS_SOURCE_EXPLOSITION_LONG, POS_SOURCE_EXPLOSITION_ALT);
-      //std::cout << "distance_R3_to_Source (m): "      << dist_Ri_to_S << std::endl;
 		});
 
     sub_pos_gps_r4 = this->create_subscription<px4_msgs::msg::SensorGps>("/px4_4/fmu/out/vehicle_gps_position", qos,
 		[this](const px4_msgs::msg::SensorGps::UniquePtr msg4) {
-			std::cout << "\n";
+			//std::cout << "\n";
       pos_gps_r4_lat = msg4->latitude_deg;
       pos_gps_r4_lon = msg4->longitude_deg;
       pos_gps_r4_alt = msg4->altitude_msl_m;
       
-      //dist_Ri_to_S = calculateDistance(pos_gps_r4_lat, pos_gps_r4_lon, pos_gps_r4_alt, POS_SOURCE_EXPLOSITION_LAT, POS_SOURCE_EXPLOSITION_LONG, POS_SOURCE_EXPLOSITION_ALT);
-      //std::cout << "distance_R4_to_Source (m): "      << dist_Ri_to_S << std::endl;
 		});
 
     sub_pos_gps_r5 = this->create_subscription<px4_msgs::msg::SensorGps>("/px4_5/fmu/out/vehicle_gps_position", qos,
 		[this](const px4_msgs::msg::SensorGps::UniquePtr msg) {
-			std::cout << "\n";
+			//std::cout << "\n";
       pos_gps_r5_lat = msg->latitude_deg;
       pos_gps_r5_lon = msg->longitude_deg;
       pos_gps_r5_alt = msg->altitude_msl_m;
       
-      //dist_Ri_to_S = calculateDistance(pos_gps_r5_lat, pos_gps_r5_lon, pos_gps_r5_alt, POS_SOURCE_EXPLOSITION_LAT, POS_SOURCE_EXPLOSITION_LONG, POS_SOURCE_EXPLOSITION_ALT);
-      //std::cout << "distance_R5_to_Source (m): "      << dist_Ri_to_S << std::endl;
 		});
 
 
@@ -216,56 +205,78 @@ private:
 
   void timer_callback()
   {
+    dist_s_explosion_to_r1 = calculateDistance(pos_gps_r1_lat, pos_gps_r1_lon, pos_gps_r1_alt, 
+                                                POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
+                              
+    dist_s_explosion_to_r2 = calculateDistance(pos_gps_r2_lat, pos_gps_r2_lon, pos_gps_r2_alt, 
+                                                POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
+    
+    dist_s_explosion_to_r3 = calculateDistance(pos_gps_r3_lat, pos_gps_r3_lon, pos_gps_r3_alt, 
+                                                POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
 
+    dist_s_explosion_to_r4 = calculateDistance(pos_gps_r4_lat, pos_gps_r4_lon, pos_gps_r4_alt, 
+                                                POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
+
+    dist_s_explosion_to_r5 = calculateDistance(pos_gps_r5_lat, pos_gps_r5_lon, pos_gps_r5_alt, 
+                                                POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
 
     count_time_explosion ++;
-    if (count_time_explosion >=10000){
+    if (count_time_explosion >=10000){ //
       count_time_explosion = 0;
     }
 
 
-    dist_s_explosion_to_r1 = calculateDistance(pos_gps_r1_lat, pos_gps_r1_lon, pos_gps_r1_alt, POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
-    s_explosion_to_r1 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
+    if (count_time_explosion/1000 >= dist_s_explosion_to_r1/SPEED_OF_SOUND)
+    {
+      s_explosion_to_r1 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
                                                     PHASE_SOURCE_EXPLOSION_1, PHASE_SOURCE_EXPLOSION_3, 
                                                     FREQUENCY_SOURCE_EXPLOSION,
                                                     dist_s_explosion_to_r1); 
-    std::cout << "\n";
-    std::cout << "distance_R1_to_Source (m): "      << dist_s_explosion_to_r1 << std::endl;
-
-                              
-    dist_s_explosion_to_r2 = calculateDistance(pos_gps_r2_lat, pos_gps_r2_lon, pos_gps_r2_alt, POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
-    s_explosion_to_r2 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
+    }
+    else{
+      s_explosion_to_r1 = 0;
+    }
+    
+    if (count_time_explosion/1000 >= dist_s_explosion_to_r2/SPEED_OF_SOUND){
+      s_explosion_to_r2 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
                                                     PHASE_SOURCE_EXPLOSION_1, PHASE_SOURCE_EXPLOSION_3, 
                                                     FREQUENCY_SOURCE_EXPLOSION,
                                                     dist_s_explosion_to_r2); 
-    std::cout << "\n";
-    std::cout << "distance_R2_to_Source (m): "      << dist_s_explosion_to_r2 << std::endl;
+    }
+    else{
+      s_explosion_to_r2 = 0;
+    }
 
-    
-    dist_s_explosion_to_r3 = calculateDistance(pos_gps_r3_lat, pos_gps_r3_lon, pos_gps_r3_alt, POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
-    s_explosion_to_r3 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
+    if (count_time_explosion/1000 >= dist_s_explosion_to_r3/SPEED_OF_SOUND){
+      s_explosion_to_r3 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
                                                     PHASE_SOURCE_EXPLOSION_1, PHASE_SOURCE_EXPLOSION_3, 
                                                     FREQUENCY_SOURCE_EXPLOSION,
                                                     dist_s_explosion_to_r3); 
-    //std::cout << "\n";
-    //std::cout << "distance_R3_to_Source (m): "      << dist_s_explosion_to_r3 << std::endl;
+    }
+    else{
+      s_explosion_to_r3 = 0;
+    }
 
-    dist_s_explosion_to_r4 = calculateDistance(pos_gps_r4_lat, pos_gps_r4_lon, pos_gps_r4_alt, POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
-    s_explosion_to_r4 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
+    if (count_time_explosion/1000 >= dist_s_explosion_to_r4/SPEED_OF_SOUND){
+      s_explosion_to_r4 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
                                                     PHASE_SOURCE_EXPLOSION_1, PHASE_SOURCE_EXPLOSION_3, 
                                                     FREQUENCY_SOURCE_EXPLOSION,
                                                     dist_s_explosion_to_r4); 
-    //std::cout << "\n";
-    //std::cout << "distance_R4_to_Source (m): "      << dist_s_explosion_to_r4 << std::endl;
+    }
+    else{
+      s_explosion_to_r4 = 0;
+    }
 
-    dist_s_explosion_to_r5 = calculateDistance(pos_gps_r5_lat, pos_gps_r5_lon, pos_gps_r5_alt, POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
-    s_explosion_to_r5 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
+    if (count_time_explosion/1000 >= dist_s_explosion_to_r5/SPEED_OF_SOUND){
+      s_explosion_to_r5 = calcul_source_explosion(AMPLITUDE_SOURCE_EXPLOSION_1, AMPLITUDE_SOURCE_EXPLOSION_3, 
                                                     PHASE_SOURCE_EXPLOSION_1, PHASE_SOURCE_EXPLOSION_3, 
                                                     FREQUENCY_SOURCE_EXPLOSION,
-                                                    dist_s_explosion_to_r5);      
-    //std::cout << "\n";
-    //std::cout << "distance_R5_to_Source (m): "      << dist_s_explosion_to_r5 << std::endl;
-
+                                                    dist_s_explosion_to_r5); 
+    }
+    else{
+      s_explosion_to_r5 = 0;
+    }
+    
     msg_ = std::make_unique<std_msgs::msg::Float32>();
     msg_->data = s_explosion_to_r1;
     source_01_publisher_->publish(std::move(msg_));
@@ -274,17 +285,17 @@ private:
     msg2_->data = s_explosion_to_r2;
     source_02_publisher_->publish(std::move(msg2_));
 
-    //msg3_ = std::make_unique<std_msgs::msg::Float32>();
-    //msg3_->data = s_explosion_to_r3;
-    //source_03_publisher_->publish(std::move(msg3_));
+    msg3_ = std::make_unique<std_msgs::msg::Float32>();
+    msg3_->data = s_explosion_to_r3;
+    source_03_publisher_->publish(std::move(msg3_));
 
-    //msg4_ = std::make_unique<std_msgs::msg::Float32>();
-    //msg4_->data = s_explosion_to_r4;
-    //source_04_publisher_->publish(std::move(msg4_));
+    msg4_ = std::make_unique<std_msgs::msg::Float32>();
+    msg4_->data = s_explosion_to_r4;
+    source_04_publisher_->publish(std::move(msg4_));
 
-    //msg5_ = std::make_unique<std_msgs::msg::Float32>();
-    //msg5_->data = s_explosion_to_r5;
-    //source_05_publisher_->publish(std::move(msg5_));
+    msg5_ = std::make_unique<std_msgs::msg::Float32>();
+    msg5_->data = s_explosion_to_r5;
+    source_05_publisher_->publish(std::move(msg5_));
   }
 
   
@@ -307,23 +318,21 @@ private:
     //double dist_source2robot = sqrt((pos_source_x - pos_robot_x)*(pos_source_x - pos_robot_x) + (pos_source_y - pos_robot_y)*(pos_source_y - pos_robot_y) + (pos_source_z - pos_robot_z) * (pos_source_z - pos_robot_z)); 
     double delta_phase_1 = 2*PI*dist_source2robot*frequency/SPEED_OF_SOUND;
     double delta_phase_3 = 2*PI*dist_source2robot*3*frequency/SPEED_OF_SOUND; 
-    
-    std::setprecision(12);
-    std::cout << "\n"; 
-    std::cout << "diff phase 1(rad): "      << delta_phase_1 << std::endl;
-    
-    std::cout << std::fixed << std::setprecision(12);
-    //std::cout << "diff phase 2(rad): "      << count_time_explosition + delta_phase_1 << std::endl;
-    //std::unique_ptr<geometry_msgs::msg::Vector3> data;
-    //std::cout << std::fixed << std::setprecision(12);
+
     //return (1/(dist_source2robot*dist_source2robot))
     //          * (amplitude_source_1 * sin(2*PI*frequency*count_time_explosion + phase_source_1 + delta_phase_1) + amplitude_source_3 * sin(2*PI*3*frequency*count_time_explosion + phase_source_3 + delta_phase_3)) 
     //          * exp(-double (count_time_explosion/1000));
     
+    
+    //return ((1/(dist_source2robot*dist_source2robot))
+    //          * (amplitude_source_1 * sin(2*PI*frequency*count_time_explosion/1000 + phase_source_1 + delta_phase_1)) 
+    //          * exp(-count_time_explosion/1000));
+    
+    
     return ((1/(dist_source2robot*dist_source2robot))
-              * (amplitude_source_1 * sin(2*PI*frequency*count_time_explosion/1000 + phase_source_1 + delta_phase_1)) 
+              * (amplitude_source_1 * sin(2*PI*frequency*(count_time_explosion/1000) + phase_source_1 + delta_phase_1)) 
               * exp(-count_time_explosion/1000));
-
+    
     //return (amplitude_source_1 * sin(2*PI*frequency*count_time_explosition + phase_source_1 + delta_phase_1) );
     //return sin(2*PI*frequency*count_time_explosition/1000 + delta_phase_1)* exp(-count_time_explosition/1000);
     //return (cos(2*PI*frequency*count_time_explosion/1000 + delta_phase_1) * exp(-count_time_explosion/1000));
@@ -334,42 +343,6 @@ private:
 
     //return double ((1/(dist_source2robot*dist_source2robot))
     //        * (amplitude_source_1 * sin(2*PI*frequency*count_time/1000 + phase_source_1 + delta_phase_1) + amplitude_source_3 * sin(2*PI*3*frequency*count_time + phase_source_3 + delta_phase_3)));
-  }
-
-  double calcul_source_explosion_r2(double amplitude_source_1, double amplitude_source_3, 
-                                   double phase_source_1, double phase_source_3, 
-                                   double frequency, double dist_source2robot)
-  {
-    //double dist_source2robot = sqrt((pos_source_x - pos_robot_x)*(pos_source_x - pos_robot_x) + (pos_source_y - pos_robot_y)*(pos_source_y - pos_robot_y) + (pos_source_z - pos_robot_z) * (pos_source_z - pos_robot_z)); 
-    double delta_phase_1 = 2*PI*dist_source2robot*frequency/SPEED_OF_SOUND;
-    double delta_phase_3 = 2*PI*dist_source2robot*3*frequency/SPEED_OF_SOUND; 
-    
-    std::setprecision(12);
-    std::cout << "\n"; 
-    std::cout << "diff phase 2(rad): "      << delta_phase_1 << std::endl;
-    
-    std::cout << std::fixed << std::setprecision(12);
-    //std::cout << "diff phase 2(rad): "      << count_time_explosition + delta_phase_1 << std::endl;
-    //std::unique_ptr<geometry_msgs::msg::Vector3> data;
-    //std::cout << std::fixed << std::setprecision(12);
-    //return (1/(dist_source2robot*dist_source2robot))
-    //          * (amplitude_source_1 * sin(2*PI*frequency*count_time_explosion + phase_source_1 + delta_phase_1) + amplitude_source_3 * sin(2*PI*3*frequency*count_time_explosion + phase_source_3 + delta_phase_3)) 
-    //          * exp(-double (count_time_explosion/1000));
-    
-    //return (1/(dist_source2robot*dist_source2robot))
-    //          * (amplitude_source_1 * sin(2*PI*frequency*count_time_explosition + phase_source_1 + delta_phase_1) ) 
-    //          * exp(-count_time_explosition/1000);
-
-    //return (amplitude_source_1 * sin(2*PI*frequency*count_time_explosition + phase_source_1 + delta_phase_1) );
-    //return sin(2*PI*frequency*count_time_explosition/1000 + delta_phase_1)* exp(-count_time_explosition/1000);
-    return (cos(2*PI*frequency*count_time_explosion/1000 + 2*PI*dist_source2robot*frequency/SPEED_OF_SOUND) * exp(-count_time_explosion/1000));
-    
-    //return sin(2*PI*100*count_time_explosion/1000);
-    
-    //return exp(-count_time_explosition/1000);
-
-    //return double ((1/(dist_source2robot*dist_source2robot))
-      //        * (amplitude_source_1 * sin(2*PI*frequency*count_time + phase_source_1 + delta_phase_1) + amplitude_source_3 * sin(2*PI*3*frequency*count_time + phase_source_3 + delta_phase_3)));
   }
 
 
