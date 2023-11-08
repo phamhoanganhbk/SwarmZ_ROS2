@@ -32,38 +32,15 @@
 #define SPEED_OF_SOUND 343 // m/s
 #define PI 3.1415
     
-#define AMPLITUDE_SOURCE_R1_1 1
-#define AMPLITUDE_SOURCE_R1_3 1
-#define FREQUENCY_SOURCE_R1 100 // hz
-#define PHASE_SOURCE_R1_1 0
-#define PHASE_SOURCE_R1_3 0
+#define AMPLITUDE_SOURCE_MOTOR_1 1
+#define AMPLITUDE_SOURCE_MOTOR_3 0
+#define FREQUENCY_SOURCE_MOTOR 100 // hz
+#define PHASE_SOURCE_MOTOR_1 0
+#define PHASE_SOURCE_MOTOR_3 0
 
-#define AMPLITUDE_SOURCE_R2_1 1
-#define AMPLITUDE_SOURCE_R2_3 1
-#define FREQUENCY_SOURCE_R2 100 // hz
-#define PHASE_SOURCE_R2_1 0
-#define PHASE_SOURCE_R2_3 0
-
-#define AMPLITUDE_SOURCE_R3_1 1
-#define AMPLITUDE_SOURCE_R3_2 1
-#define FREQUENCY_SOURCE_R3 100 // hz
-#define PHASE_SOURCE_R3_1 0
-#define PHASE_SOURCE_R3_3 0
-
-#define AMPLITUDE_SOURCE_R4_1 1
-#define AMPLITUDE_SOURCE_R4_3 1
-#define FREQUENCY_SOURCE_R4_3 100 // hz
-#define PHASE_SOURCE_R4_1 0
-#define PHASE_SOURCE_R4_3 0
-
-#define AMPLITUDE_SOURCE_R5_1 1
-#define AMPLITUDE_SOURCE_R5_3 1
-#define FREQUENCY_SOURCE_R5 100 // hz
-#define PHASE_SOURCE_R5_1 0
-#define PHASE_SOURCE_R5_3 0
 
 #define AMPLITUDE_SOURCE_NOISE_WHITE_1 1
-#define AMPLITUDE_SOURCE_NOISE_WHITE_3 1
+#define AMPLITUDE_SOURCE_NOISE_WHITE_3 0
 #define FREQUENCY_SOURCE_NOISE_WHITE 100 // hz
 #define PHASE_SOURCE_NOISE_WHITE_1 0
 #define PHASE_SOURCE_NOISE_WHITE_3 0
@@ -74,6 +51,7 @@
 #define PHASE_SOURCE_EXPLOSION_1 0
 #define PHASE_SOURCE_EXPLOSION_3 0
 
+/*
 #define POS_SOURCE_R1_X  0
 #define POS_SOURCE_R1_Y  0
 #define POS_SOURCE_R1_Z  0 
@@ -101,10 +79,11 @@
 #define POS_SOURCE_EXPLOSION_X 0
 #define POS_SOURCE_EXPLOSION_Y 0
 #define POS_SOURCE_EXPLOSION_Z 0  
+*/
 
 #define POS_SOURCE_EXPLOSION_LAT 43.13471   //deg
 #define POS_SOURCE_EXPLOSION_LONG 6.01507   //deg
-#define POS_SOURCE_EXPLOSION_ALT 6.0          //Height above mean sea (m)  
+#define POS_SOURCE_EXPLOSION_ALT 6.0        //Height above mean sea (m)  
 
 
 using namespace std::chrono_literals;
@@ -122,32 +101,14 @@ public:
     rmw_qos_profile_t qos_profile = rmw_qos_profile_sensor_data;
 		auto qos = rclcpp::QoS(rclcpp::QoSInitialization(qos_profile.history, 5), qos_profile);
 		
-    /*
-		sub_pose_local_r1 = this->create_subscription<px4_msgs::msg::VehicleLocalPosition>("/px4_1/fmu/out/vehicle_local_position", qos,
-		[this](const px4_msgs::msg::VehicleLocalPosition::UniquePtr msg) {
-			pose_local_r1_x = msg->x;
-      pose_local_r1_y = msg->y;
-      pose_local_r1_z = msg->z;
-      
-      std::cout << "\n\n\n\n";
-			std::cout << "Distance between Drone 1 and Source S1"   << std::endl;
-			std::cout << "x: "      << pose_local_r1_x    << std::endl;
-      std::cout << "y: "      << pose_local_r1_y    << std::endl;
-      std::cout << "z: "      << pose_local_r1_z    << std::endl;
-      //dist_Ri_to_S = sqrt(msg->x * msg->x + msg->y * msg->y + msg->z * msg->z);
-      dist_Ri_to_S = haversine(43.1347108591022, 6.021229981808671, 43.13471, 6.01507);
-      std::cout << "dist1: "      << dist_Ri_to_S   << std::endl;
-		});
-    */
 
+    // Obtenez la localisation GPS du drone
     sub_pos_gps_r1 = this->create_subscription<px4_msgs::msg::SensorGps>("/px4_1/fmu/out/vehicle_gps_position", qos,
 		[this](const px4_msgs::msg::SensorGps::UniquePtr msg) {
 			//std::cout << "\n";
       pos_gps_r1_lat = msg->latitude_deg;
       pos_gps_r1_lon = msg->longitude_deg;
-      pos_gps_r1_alt = msg->altitude_msl_m;
-      
-
+      pos_gps_r1_alt = msg->altitude_msl_m;    
 		});
 
 
@@ -156,8 +117,7 @@ public:
 			//std::cout << "\n";
       pos_gps_r2_lat = msg->latitude_deg;
       pos_gps_r2_lon = msg->longitude_deg;
-      pos_gps_r2_alt = msg->altitude_msl_m;
-      
+      pos_gps_r2_alt = msg->altitude_msl_m;   
 		});
 
     sub_pos_gps_r3 = this->create_subscription<px4_msgs::msg::SensorGps>("/px4_3/fmu/out/vehicle_gps_position", qos,
@@ -165,8 +125,7 @@ public:
 			//std::cout << "\n";
       pos_gps_r3_lat = msg->latitude_deg;
       pos_gps_r3_lon = msg->longitude_deg;
-      pos_gps_r3_alt = msg->altitude_msl_m;
-      
+      pos_gps_r3_alt = msg->altitude_msl_m;     
 		});
 
     sub_pos_gps_r4 = this->create_subscription<px4_msgs::msg::SensorGps>("/px4_4/fmu/out/vehicle_gps_position", qos,
@@ -174,8 +133,7 @@ public:
 			//std::cout << "\n";
       pos_gps_r4_lat = msg4->latitude_deg;
       pos_gps_r4_lon = msg4->longitude_deg;
-      pos_gps_r4_alt = msg4->altitude_msl_m;
-      
+      pos_gps_r4_alt = msg4->altitude_msl_m;  
 		});
 
     sub_pos_gps_r5 = this->create_subscription<px4_msgs::msg::SensorGps>("/px4_5/fmu/out/vehicle_gps_position", qos,
@@ -183,8 +141,7 @@ public:
 			//std::cout << "\n";
       pos_gps_r5_lat = msg->latitude_deg;
       pos_gps_r5_lon = msg->longitude_deg;
-      pos_gps_r5_alt = msg->altitude_msl_m;
-      
+      pos_gps_r5_alt = msg->altitude_msl_m;  
 		});
 
 
@@ -205,6 +162,8 @@ private:
 
   void timer_callback()
   {
+    
+    // Calculer la distance entre le drone et l'explosion
     dist_s_explosion_to_r1 = calculateDistance(pos_gps_r1_lat, pos_gps_r1_lon, pos_gps_r1_alt, 
                                                 POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
                               
@@ -220,11 +179,109 @@ private:
     dist_s_explosion_to_r5 = calculateDistance(pos_gps_r5_lat, pos_gps_r5_lon, pos_gps_r5_alt, 
                                                 POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
 
+    // Calculer la distance entre les drones
+    dist_r1_r2 = calculateDistance(pos_gps_r1_lat, pos_gps_r1_lon, pos_gps_r1_alt, pos_gps_r2_lat, pos_gps_r2_lon, pos_gps_r2_alt); 
+    dist_r1_r3 = calculateDistance(pos_gps_r1_lat, pos_gps_r1_lon, pos_gps_r1_alt, pos_gps_r3_lat, pos_gps_r3_lon, pos_gps_r3_alt); 
+    dist_r1_r4 = calculateDistance(pos_gps_r1_lat, pos_gps_r1_lon, pos_gps_r1_alt, pos_gps_r4_lat, pos_gps_r4_lon, pos_gps_r4_alt); 
+    dist_r1_r5 = calculateDistance(pos_gps_r1_lat, pos_gps_r1_lon, pos_gps_r1_alt, pos_gps_r5_lat, pos_gps_r5_lon, pos_gps_r5_alt); 
+    dist_r2_r3 = calculateDistance(pos_gps_r2_lat, pos_gps_r2_lon, pos_gps_r2_alt, pos_gps_r3_lat, pos_gps_r3_lon, pos_gps_r3_alt); 
+    dist_r2_r4 = calculateDistance(pos_gps_r2_lat, pos_gps_r2_lon, pos_gps_r2_alt, pos_gps_r4_lat, pos_gps_r4_lon, pos_gps_r4_alt); 
+    dist_r2_r5 = calculateDistance(pos_gps_r2_lat, pos_gps_r2_lon, pos_gps_r2_alt, pos_gps_r5_lat, pos_gps_r5_lon, pos_gps_r5_alt); 
+    dist_r3_r4 = calculateDistance(pos_gps_r3_lat, pos_gps_r3_lon, pos_gps_r3_alt, pos_gps_r4_lat, pos_gps_r4_lon, pos_gps_r4_alt); 
+    dist_r3_r5 = calculateDistance(pos_gps_r3_lat, pos_gps_r3_lon, pos_gps_r3_alt, pos_gps_r5_lat, pos_gps_r5_lon, pos_gps_r5_alt); 
+    dist_r4_r5 = calculateDistance(pos_gps_r4_lat, pos_gps_r4_lon, pos_gps_r4_alt, pos_gps_r5_lat, pos_gps_r5_lon, pos_gps_r5_alt); 
+
+
+    // Générer du bruit de moteur
+    s_motor_to_r1 = calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r1_r2) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r1_r3)
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r1_r4) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r1_r5); 
+    
+    s_motor_to_r2 = calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r1_r2) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r2_r3)
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r2_r4) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r2_r5); 
+
+    s_motor_to_r3 = calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r1_r3) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r2_r3)
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r3_r4) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r3_r5); 
+
+    s_motor_to_r4 = calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r1_r4) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r2_r4)
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r3_r4) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r4_r5); 
+    
+    s_motor_to_r5 = calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r1_r5) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r2_r5)
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r3_r5) 
+                  + calcul_source_motor(AMPLITUDE_SOURCE_MOTOR_1, AMPLITUDE_SOURCE_MOTOR_3, 
+                                        PHASE_SOURCE_MOTOR_1, PHASE_SOURCE_MOTOR_3, 
+                                        FREQUENCY_SOURCE_MOTOR,
+                                        dist_r4_r5); 
+
     count_time_explosion ++;
     if (count_time_explosion >=10000){ //
       count_time_explosion = 0;
     }
-
 
     if (count_time_explosion/1000 >= dist_s_explosion_to_r1/SPEED_OF_SOUND)
     {
@@ -276,66 +333,60 @@ private:
     else{
       s_explosion_to_r5 = 0;
     }
+
+    // Total des sources de signaux audio pour chaque drone
+    s_total_to_r1 = s_explosion_to_r1 + s_motor_to_r1;
+    s_total_to_r2 = s_explosion_to_r2 + s_motor_to_r2;
+    s_total_to_r3 = s_explosion_to_r3 + s_motor_to_r3;
+    s_total_to_r4 = s_explosion_to_r4 + s_motor_to_r4;
+    s_total_to_r5 = s_explosion_to_r5 + s_motor_to_r5;
+
     
     msg_ = std::make_unique<std_msgs::msg::Float32>();
-    msg_->data = s_explosion_to_r1;
+    msg_->data = s_total_to_r1;
     source_01_publisher_->publish(std::move(msg_));
     
     msg2_ = std::make_unique<std_msgs::msg::Float32>();
-    msg2_->data = s_explosion_to_r2;
+    msg2_->data = s_total_to_r2;
     source_02_publisher_->publish(std::move(msg2_));
 
     msg3_ = std::make_unique<std_msgs::msg::Float32>();
-    msg3_->data = s_explosion_to_r3;
+    msg3_->data = s_total_to_r3;
     source_03_publisher_->publish(std::move(msg3_));
 
     msg4_ = std::make_unique<std_msgs::msg::Float32>();
-    msg4_->data = s_explosion_to_r4;
+    msg4_->data = s_total_to_r4;
     source_04_publisher_->publish(std::move(msg4_));
 
     msg5_ = std::make_unique<std_msgs::msg::Float32>();
-    msg5_->data = s_explosion_to_r5;
+    msg5_->data = s_total_to_r5;
     source_05_publisher_->publish(std::move(msg5_));
   }
 
-  
-  double calcul_source_receive(double pos_source_x, double pos_source_y, double pos_source_z, double pos_robot_x, double pos_robot_y, double pos_robot_z,
-                                double amplitude_source_1, double amplitude_source_3, double phase_source_1, double phase_source_3, double frequency)
-  {
-    double dist_source2robot = sqrt((pos_source_x - pos_robot_x)*(pos_source_x - pos_robot_x) + (pos_source_y - pos_robot_y)*(pos_source_y - pos_robot_y) + (pos_source_z - pos_robot_z) * (pos_source_z - pos_robot_z)); 
-    double delta_phase_1 = 2*PI*dist_source2robot*frequency/SPEED_OF_SOUND;
-    double delta_phase_3 = 2*PI*dist_source2robot*3*frequency/SPEED_OF_SOUND; 
-    //std::unique_ptr<geometry_msgs::msg::Vector3> data;
-    return (1/(dist_source2robot*dist_source2robot)) * (amplitude_source_1 * sin(2*PI*frequency*count_time + phase_source_1 + delta_phase_1) + amplitude_source_3 * sin(2*PI*3*frequency*count_time + phase_source_3 + delta_phase_3));
-    //data -> y = delta_phase_1;
-    //data -> z = delta_phase_3;
-  }
 
   double calcul_source_explosion(double amplitude_source_1, double amplitude_source_3, 
                                    double phase_source_1, double phase_source_3, 
                                    double frequency, double dist_source2robot)
   {
-    //double dist_source2robot = sqrt((pos_source_x - pos_robot_x)*(pos_source_x - pos_robot_x) + (pos_source_y - pos_robot_y)*(pos_source_y - pos_robot_y) + (pos_source_z - pos_robot_z) * (pos_source_z - pos_robot_z)); 
     double delta_phase_1 = 2*PI*dist_source2robot*frequency/SPEED_OF_SOUND;
     double delta_phase_3 = 2*PI*dist_source2robot*3*frequency/SPEED_OF_SOUND; 
 
-    //return (1/(dist_source2robot*dist_source2robot))
-    //          * (amplitude_source_1 * sin(2*PI*frequency*count_time_explosion + phase_source_1 + delta_phase_1) + amplitude_source_3 * sin(2*PI*3*frequency*count_time_explosion + phase_source_3 + delta_phase_3)) 
-    //          * exp(-double (count_time_explosion/1000));
-    
-    
-    //return ((1/(dist_source2robot*dist_source2robot))
-    //          * (amplitude_source_1 * sin(2*PI*frequency*count_time_explosion/1000 + phase_source_1 + delta_phase_1)) 
-    //          * exp(-count_time_explosion/1000));
-    
     
     return ((1/(dist_source2robot*dist_source2robot))
               * (amplitude_source_1 * sin(2*PI*frequency*(count_time_explosion/1000) + phase_source_1 + delta_phase_1)) 
               * exp(-count_time_explosion/1000));
-    
+  }
 
-    //return double ((1/(dist_source2robot*dist_source2robot))
-    //        * (amplitude_source_1 * sin(2*PI*frequency*count_time/1000 + phase_source_1 + delta_phase_1) + amplitude_source_3 * sin(2*PI*3*frequency*count_time + phase_source_3 + delta_phase_3)));
+  double calcul_source_motor(double amplitude_source_1, double amplitude_source_3, 
+                                   double phase_source_1, double phase_source_3, 
+                                   double frequency, double dist_source2robot)
+  {
+    double delta_phase_1 = 2*PI*dist_source2robot*frequency/SPEED_OF_SOUND;
+    double delta_phase_3 = 2*PI*dist_source2robot*3*frequency/SPEED_OF_SOUND; 
+    
+    
+    return ((1/(dist_source2robot*dist_source2robot))
+              * (amplitude_source_1 * sin(2*PI*frequency*(count_time_explosion/1000) + phase_source_1 + delta_phase_1)));
   }
 
 
@@ -387,8 +438,13 @@ private:
   double dist_s1_to_r1, dist_s1_to_r2, 
           dist_s_explosion_to_r1, dist_s_explosion_to_r2, dist_s_explosion_to_r3, dist_s_explosion_to_r4, dist_s_explosion_to_r5,
           dist_Ri_to_S;
+  
+  double dist_r1_r2, dist_r1_r3, dist_r1_r4, dist_r1_r5, dist_r2_r3, dist_r2_r4, dist_r2_r5, dist_r3_r4, dist_r3_r5, dist_r4_r5;
 
   double s_explosion_to_r1, s_explosion_to_r2, s_explosion_to_r3, s_explosion_to_r4, s_explosion_to_r5;
+  double s_motor_to_r1, s_motor_to_r2, s_motor_to_r3, s_motor_to_r4, s_motor_to_r5;
+  double s_total_to_r1, s_total_to_r2, s_total_to_r3, s_total_to_r4, s_total_to_r5;
+  
 
   double pose_local_r1_x, pose_local_r1_y, pose_local_r1_z;
   double pose_local_r2_x, pose_local_r2_y, pose_local_r2_z;
