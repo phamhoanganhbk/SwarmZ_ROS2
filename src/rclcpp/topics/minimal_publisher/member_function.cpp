@@ -32,7 +32,7 @@
 #define SPEED_OF_SOUND 343 // m/s
 #define PI 3.1415
     
-#define AMPLITUDE_SOURCE_MOTOR_1 1
+#define AMPLITUDE_SOURCE_MOTOR_1 5
 #define AMPLITUDE_SOURCE_MOTOR_3 0
 #define FREQUENCY_SOURCE_MOTOR 100 // hz
 #define PHASE_SOURCE_MOTOR_1 0
@@ -172,12 +172,21 @@ private:
     
     dist_s_explosion_to_r3 = calculateDistance(pos_gps_r3_lat, pos_gps_r3_lon, pos_gps_r3_alt, 
                                                 POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
+                                 
 
     dist_s_explosion_to_r4 = calculateDistance(pos_gps_r4_lat, pos_gps_r4_lon, pos_gps_r4_alt, 
                                                 POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
+                                       
 
     dist_s_explosion_to_r5 = calculateDistance(pos_gps_r5_lat, pos_gps_r5_lon, pos_gps_r5_alt, 
                                                 POS_SOURCE_EXPLOSION_LAT, POS_SOURCE_EXPLOSION_LONG, POS_SOURCE_EXPLOSION_ALT);
+    
+    std::cout << "\n";
+    std::cout << "dist_s_explosion_to_r1: "      << dist_s_explosion_to_r1   << std::endl;
+    std::cout << "dist_s_explosion_to_r2: "      << dist_s_explosion_to_r2   << std::endl;
+    std::cout << "dist_s_explosion_to_r3: "      << dist_s_explosion_to_r3   << std::endl;     
+    std::cout << "dist_s_explosion_to_r4: "      << dist_s_explosion_to_r4   << std::endl;     
+    std::cout << "dist_s_explosion_to_r5: "      << dist_s_explosion_to_r5   << std::endl;                                            
 
     // Calculer la distance entre les drones
     dist_r1_r2 = calculateDistance(pos_gps_r1_lat, pos_gps_r1_lon, pos_gps_r1_alt, pos_gps_r2_lat, pos_gps_r2_lon, pos_gps_r2_alt); 
