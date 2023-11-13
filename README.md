@@ -1,36 +1,59 @@
-#Install PX4
-Installer la chaîne d'outils de développement PX4 afin d'utiliser le simulateur.
-
-$ cd
-$ git clone https://github.com/PX4/PX4-Autopilot.git --recursive
-$ bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
-$ cd PX4-Autopilot/
-$ make px4_sitl
-
-#Intall ROS2 Humble
-
-$ sudo apt update && sudo apt install locales
-$ sudo locale-gen en_US en_US.UTF-8
-$ sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-$ export LANG=en_US.UTF-8
-$ sudo apt install software-properties-common
-$ sudo add-apt-repository universe
-$ sudo apt update && sudo apt install curl -y
-$ sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-$ sudo apt update && sudo apt upgrade -y
-$ sudo apt install ros-humble-desktop
-$ sudo apt install ros-dev-tools
-$ source /opt/ros/humble/setup.bash && echo "source /opt/ros/humble/setup.bash" >> .bashrc
+## Technologies Used
+- Tech 1 - version 1.0
+- Tech 2 - version 2.0
+- Tech 3 - version 3.0
 
 
-#Télécharger et construire l'espace de travail ROS2
-Il s'agit d'un programme développé sur la plateforme ROS2 pour recevoir des signaux et envoyer des signaux de contrôle aux drones
-Télécharger le fichier SwarmZ_ROS2
+## Features
+List the ready features here:
+- Awesome feature 1
+- Awesome feature 2
+- Awesome feature 3
 
-$ cd ..
-$ git clone https://github.com/phamhoanganhbk/SwarmZ_ROS2.git
 
+## Screenshots
+![Example screenshot](./img/screenshot.png)
+<!-- If you have screenshots you'd like to share, include them here. -->
+
+
+## Setup
+What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
+
+Proceed to describe how to install / setup one's local environment / get started with the project.
+
+
+## Usage
+How does one go about using it?
+Provide various use cases and code examples here.
+
+`write-your-code-here`
+
+
+## Project Status
+Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why.
+
+
+## Room for Improvement
+Include areas you believe need improvement / could be improved. Also add TODOs for future development.
+
+Room for improvement:
+- Improvement to be done 1
+- Improvement to be done 2
+
+To do:
+- Feature to be added 1
+- Feature to be added 2
+
+
+## Acknowledgements
+Give credit here.
+- This project was inspired by...
+- This project was based on [this tutorial](https://www.example.com).
+- Many thanks to...
+
+
+## Contact
+Created by [@flynerdpl](https://www.flynerd.pl/) - feel free to contact me!
 
 
 Veuillez consulter le fichier SWARMz_Tutorial_v1_1_Simulation_ROS_2_Multi_Drones.pdf pour plus de détails
