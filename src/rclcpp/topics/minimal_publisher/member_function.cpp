@@ -146,11 +146,18 @@ public:
 
 
     //publisher_            = this->create_publisher<std_msgs::msg::String>("topic", 10);
+    /*
     source_01_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_explosion/toDrone_1",10);
     source_02_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_explosion/toDrone_2",10);
     source_03_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_explosion/toDrone_3",10);
     source_04_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_explosion/toDrone_4",10);
     source_05_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_explosion/toDrone_5",10);
+    */
+    source_01_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_total/toDrone_1",10);
+    source_02_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_total/toDrone_2",10);
+    source_03_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_total/toDrone_3",10);
+    source_04_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_total/toDrone_4",10);
+    source_05_publisher_  = this->create_publisher<std_msgs::msg::Float32>("/source_total/toDrone_5",10);
 
     // Make and Publisher sources 
     //source_01_to_r01_pub_        = this->create_publisher<geometry_msgs::msg::Vector3>("/source_01/robot_01/pub",10);
